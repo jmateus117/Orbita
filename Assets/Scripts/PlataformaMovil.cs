@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class PlataformaMovil : MonoBehaviour
 {
- 
-        [Header("COnfiguracion de la plataforma:")]
+  [Header("COnfiguracion de la plataforma:")]
         [Tooltip("Altura minima de la plataforma de unds del mundo")]
 
         [SerializeField] private float minHeight = 0f;
