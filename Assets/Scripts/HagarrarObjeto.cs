@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HagarrarObjeto : MonoBehaviour
 {
-// Definimos los tipos de coleccionables que tendrás en el juego
+// Definimos los tipos de coleccionables que tendria e juego
     public enum TipoColeccionable
     {
         Bateria,
@@ -11,7 +11,7 @@ public class HagarrarObjeto : MonoBehaviour
 
     [Header("Configuración del Objeto")]
     public TipoColeccionable tipo;
-    public float valorRecarga = 45f; // Usado si es Oxígeno (cuánto recarga)
+    public float valorRecarga = 45f; // 
     
     private void OnTriggerEnter(Collider other)
     {

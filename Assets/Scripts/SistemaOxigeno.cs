@@ -8,9 +8,6 @@ public class SistemaOxigeno : MonoBehaviour
     public float tiempoMaximoOxigeno = 180f; // 3 minutos
     private float oxigenoActual;
 
-    [Header("UI")]
-    public Slider sliderOxigeno;
-
     [Header("Respawn")]
     public Transform puntoRespawn; // <--- Aquí arrastrarás tu plataforma de respawn
     private Rigidbody rb;
@@ -24,10 +21,10 @@ public class SistemaOxigeno : MonoBehaviour
         // Guardamos una posición de respaldo inicial por seguridad
         posicionFallback = transform.position;
 
-        if (sliderOxigeno != null)
+        // Sincronizamos con el HUD de tu compañero al iniciar
+        if (HUD.Instancia != null)
         {
-            sliderOxigeno.maxValue = tiempoMaximoOxigeno;
-            sliderOxigeno.value = oxigenoActual;
+            HUD.Instancia.ActualizarOxigeno(oxigenoActual, tiempoMaximoOxigeno);
         }
     }
 
@@ -37,9 +34,10 @@ public class SistemaOxigeno : MonoBehaviour
         {
             oxigenoActual -= Time.deltaTime;
 
-            if (sliderOxigeno != null)
+            // Actualizamos el HUD de tu compañero en cada frame
+            if (HUD.Instancia != null)
             {
-                sliderOxigeno.value = oxigenoActual;
+                HUD.Instancia.ActualizarOxigeno(oxigenoActual, tiempoMaximoOxigeno);
             }
 
             if (oxigenoActual <= 0)
@@ -54,9 +52,16 @@ public class SistemaOxigeno : MonoBehaviour
         oxigenoActual += cantidad;
         oxigenoActual = Mathf.Clamp(oxigenoActual, 0, tiempoMaximoOxigeno);
 
-        if (sliderOxigeno != null)
+        // Si tu compañero tiene una función para recargar con sonido y efectos, la llamamos:
+        if (HUD.Instancia != null)
         {
-            sliderOxigeno.value = oxigenoActual;
+            HUD.Instancia.ActualizarOxigeno(oxigenoActual, tiempoMaximoOxigeno);
+            
+            // Si quieres que reproduzca el sonido de recarga de tu amigo al llenarse o recoger tanque:
+            if (oxigenoActual >= tiempoMaximoOxigeno)
+            {
+                HUD.Instancia.RecargarOxigeno();
+            }
         }
     }
 
@@ -64,11 +69,11 @@ public class SistemaOxigeno : MonoBehaviour
     {
         Debug.Log("¡Te has quedado sin oxígeno! Teletransportando al respawn...");
 
-        // 1. Rellenamos el oxígeno al máximo
+        // 1. Rellenamos el oxígeno al máximo y actualizamos el HUD
         oxigenoActual = tiempoMaximoOxigeno;
-        if (sliderOxigeno != null)
+        if (HUD.Instancia != null)
         {
-            sliderOxigeno.value = oxigenoActual;
+            HUD.Instancia.ActualizarOxigeno(oxigenoActual, tiempoMaximoOxigeno);
         }
 
         // 2. Frenamos las físicas de la cápsula para que no salga volando

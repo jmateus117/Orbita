@@ -7,7 +7,7 @@ public class Inventario : MonoBehaviour
     public int bateriasRecolectadas = 0;
 
     [Header("UI")]
-    public TextMeshProUGUI textoBaterias; // Cambia a TextMeshProUGUI si usas TMP
+    public TextMeshProUGUI textoBaterias; 
 
     void Start()
     {

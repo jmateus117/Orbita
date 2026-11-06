@@ -23,7 +23,7 @@ public class Movimiento : MonoBehaviour
     public float wallSlideSpeed = 1.0f;
     public float wallJumpForce = 8.0f; 
     private Vector3 lastWallNormal;
-    private float wallHoldTimer = 0f;       
+    private float wallHoldTimer = 0f;          
     private float wallJumpCooldown = 0f;    
 
     public Vector3 gravedadActual = Vector3.down;
@@ -60,17 +60,26 @@ public class Movimiento : MonoBehaviour
             StartCoroutine(RotarSuavizado(debeEstarInvertida));
         }
 
-        // Detección de muros
+        // Detección de muros ajustada para el nuevo modelo 3D
         isTouchingWall = false;
+        
+        // Ajustamos la altura al torso (0.5f) y aumentamos la distancia a 0.8f para asegurar el impacto
+        Vector3 rayOrigin = transform.position + (Vector3.up * 0.5f); 
+        float rayDistance = 1.8f;
+        Vector3 dirToCheck = moveInput.magnitude > 0.1f ? moveInput.normalized : transform.forward;
+
         if (moveInput.magnitude > 0.1f)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, moveInput.normalized, out hit, 0.6f, wallLayer))
+            if (Physics.Raycast(rayOrigin, moveInput.normalized, out hit, rayDistance, wallLayer))
             {
                 isTouchingWall = true;
                 lastWallNormal = hit.normal; 
             }
         }
+
+        // Dibuja la línea en la pestaña Scene (Verde si detecta el muro, Azul si estás quieto)
+        Debug.DrawRay(rayOrigin, dirToCheck * rayDistance, moveInput.magnitude > 0.1f ? (isTouchingWall ? Color.green : Color.red) : Color.blue);
 
         // Reducir temporizadores
         if (wallJumpCooldown > 0f)
@@ -195,7 +204,6 @@ public class Movimiento : MonoBehaviour
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }
-
     
 }
     
