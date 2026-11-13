@@ -24,7 +24,7 @@ public class HUD : MonoBehaviour
     public AudioClip sonidoRecarga;
 
     [Header("Modo demo")]
-    public bool oxigenoDemo = true;
+    public bool oxigenoDemo = false;
     public float segundosDeOxigeno = 60f;
 
     float oxigeno = 1f;
@@ -83,27 +83,10 @@ public class HUD : MonoBehaviour
         Mostrar(1f);
         if (AudioManager.Instancia != null) AudioManager.Instancia.ReproducirEfecto(sonidoRecarga);
     }
-
-    [Header("Baterías")]
-public TMP_Text textoBaterias; // Arrastra aquí un texto de TextMeshPro para las baterías
-public AudioClip sonidoBateria;   // Sonido opcional al recoger una batería
-private int contadorBaterias = 0;
-
-// Agrega esta función pública que llamará tu BateriaColeccionable
-public void SumarBateriaHUD()
-{
-    contadorBaterias++;
-
-    // Actualiza el texto en pantalla (por ejemplo: "Baterías: 2")
-    if (textoBaterias)
+    public void SumarBateriaHUD()
     {
-        textoBaterias.text = "Baterías: " + contadorBaterias;
+        // Coloca aquí la lógica de lo que debe pasar en la interfaz cuando recojas una batería
+        // (por ejemplo, sumar a un contador de baterías o actualizar un texto en pantalla).
+        Debug.Log("¡Batería sumada al HUD!");
     }
-
-    // Reproduce el sonido si lo tienes asignado
-    if (AudioManager.Instancia != null && sonidoBateria != null)
-    {
-        AudioManager.Instancia.ReproducirEfecto(sonidoBateria);
-    }
-}
 }
